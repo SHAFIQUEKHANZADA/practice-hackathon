@@ -58,11 +58,7 @@ const CategoryCarousel = () => {
       (prevIndex - visibleItems + categories.length) % categories.length
     );
   };
-
-  const handleDotClick = (index: number) => {
-    setCurrentIndex(index * visibleItems);
-  };
-
+ 
   return (
     <div className={`${poppins.className} relative md:px-[65px] px-5 flex flex-col justify-between my-12`}>
       <div className="flex items-center gap-4 mb-5">
@@ -92,13 +88,13 @@ const CategoryCarousel = () => {
         <div className="md:hidden block">
           <button
             onClick={prevSlide}
-            className="absolute left-5 top-[45%] transform -translate-y-1/2 bg-[#F5F5F5]  w-10 h-10 rounded-full flex items-center justify-center "
+            className="absolute left-5 top-[50%] transform -translate-y-1/2 bg-[#F5F5F5]  w-10 h-10 rounded-full flex items-center justify-center "
           >
             &#60;
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-5 top-[45%] transform -translate-y-1/2 bg-[#F5F5F5]  w-10 h-10 rounded-full flex items-center justify-center "
+            className="absolute right-5 top-[50%] transform -translate-y-1/2 bg-[#F5F5F5]  w-10 h-10 rounded-full flex items-center justify-center "
           >
             &#62;
           </button>
@@ -119,7 +115,7 @@ const CategoryCarousel = () => {
         </div>
       </div>
 
-      <div className="bg-[#000000] opacity-[30%] h-[1px] w-full my-16" />
+      <div className="bg-[#000000] opacity-[30%] sm:h-[1px] h-[8px] rounded-2xl sm:w-full w-[30%] mx-auto sm:my-16 my-8" />
     </div>
   );
 };

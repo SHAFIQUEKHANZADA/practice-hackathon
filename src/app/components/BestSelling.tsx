@@ -34,10 +34,10 @@ const BestSelling = () => {
                 <button className="md:text-[16px] text-[12px] font-medium text-white bg-[#DB4444] rounded md:px-[48px] px-[20px] md:py-[16px] py-[10px]">View All</button>
             </div>
 
-            <div className="my-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="my-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 sm:gap-8 gap-4">
                 {bestSelling.map((product) => (
                     <div key={product.id} className="relative group bg-white rounded overflow-hidden md:h-[350px] h-[300px] md:w-[270px] flex flex-col justify-between">
-                        <div className="relative w-full h-[250px] overflow-hidden rounded">
+                        <div className="relative w-full sm:h-[250px] h-[200px] overflow-hidden rounded">
                             <Image
                                 src={product.image}
                                 alt={product.category}
@@ -64,12 +64,12 @@ const BestSelling = () => {
                         </div>
 
                         {/* Favorite and View Icons */}
-                        <div className="absolute right-3 top-12 transform -translate-y-1/2 flex flex-col gap-2">
-                            <div className="bg-white w-[34px] h-[34px] rounded-full flex items-center justify-center">
-                                <AiOutlineHeart className="text-[24px]" />
+                        <div className="absolute sm:right-3 right-2 sm:top-12 top-11 transform -translate-y-1/2 flex flex-col gap-2">
+                            <div className="bg-white sm:w-[34px] sm:h-[34px] w-[30px] h-[30px] rounded-full flex items-center justify-center">
+                                <AiOutlineHeart className="sm:text-[24px] text-[20px]" />
                             </div>
-                            <div className="bg-white w-[34px] h-[34px] rounded-full flex items-center justify-center">
-                                <IoEyeOutline className="text-[24px]" />
+                            <div className="bg-white sm:w-[34px] sm:h-[34px] w-[30px] h-[30px]  rounded-full flex items-center justify-center">
+                                <IoEyeOutline className="sm:text-[24px] text-[20px]" />
                             </div>
                         </div>
                     </div>

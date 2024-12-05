@@ -1,10 +1,10 @@
 "use client";
 import { Poppins } from 'next/font/google';
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 import { MdKeyboardArrowRight } from 'react-icons/md';
+import MainBanner from './MainBanner';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ["400"] })
 
@@ -36,8 +36,8 @@ const Hero = () => {
     ];
 
     return (
-        <div className={`${poppins.className} w-[90%] mx-auto h-[calc(100vh-120px)]  flex justify-between`}>
-            <div className='md:flex hidden flex-col gap-4 w-[217px] mt-10'>
+        <div className={`${poppins.className} md:w-[90%] mx-auto md:h-[calc(100vh-120px)] h-[70vh]  flex items-start justify-between`}>
+            <div className='md:flex hidden flex-col gap-4 w-[217px] md:mt-10'>
                 {categories.map((category) => (
                     <div key={category.name} className="relative">
                         <button
@@ -112,14 +112,8 @@ const Hero = () => {
                     </li>
                 </ul>
             </div>
-            <div className="bg-[#000000] opacity-[30%] w-[1px] h-[380px]" />
-            <Image
-                src={"/images/main.png"}
-                alt='main'
-                width={892}
-                height={344}
-                className='md:w-[892px] md:h-[344px] w-[100vw] h-fit mt-10'
-            />
+            <div className="bg-[#000000] opacity-[30%] w-[1px] h-[380px] md:block hidden" />
+            <MainBanner/>
 
         </div>
     );

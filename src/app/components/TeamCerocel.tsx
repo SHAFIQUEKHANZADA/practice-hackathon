@@ -6,7 +6,20 @@ import { PiInstagramLogoLight } from 'react-icons/pi';
 import { RiLinkedinLine } from 'react-icons/ri';
 import Link from 'next/link';
 
-const TeamCarousel = ({ teamMembers }: any) => {
+interface TeamMember {
+  name: string;
+  title: string;
+  image: string;
+  twitter: string;
+  instagram: string;
+  linkedin: string;
+}
+
+interface TeamCarouselProps {
+  teamMembers: TeamMember[]; 
+}
+
+const TeamCarousel = ({ teamMembers }: TeamCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const itemsToDisplay = teamMembers.slice(currentIndex, currentIndex + 3);
@@ -19,14 +32,14 @@ const TeamCarousel = ({ teamMembers }: any) => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + teamMembers.length) % teamMembers.length);
   };
 
-  const handleDotClick = (index: any) => {
+  const handleDotClick = (index: number) => {
     setCurrentIndex(index);
   };
 
   return (
     <div className="relative h-[630px]">
       <div className="flex overflow-hidden justify-center">
-        {itemsToDisplay.map((member: any, index: any) => (
+        {itemsToDisplay.map((member, index) => (
           <div key={index} className="sm:mx-2 mx-4">
             <div className='sm:w-[370px] w-[330px] h-[564px] flex flex-col justify-between'>
               <Image src={member.image} alt={member.name} width={370} height={430} className='w-[370px] h-[430px] object-scale-down' />
@@ -64,10 +77,8 @@ const TeamCarousel = ({ teamMembers }: any) => {
         &#62;
       </button>
 
-
-      {/* Dots for navigation */}
       <div className="absolute sm:bottom-1 bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2">
-        {teamMembers.slice(0, Math.ceil(teamMembers.length / 1)).map((_: any, index: any) => (
+        {teamMembers.slice(0, Math.ceil(teamMembers.length / 1)).map((_, index) => (
           <button
             key={index}
             onClick={() => handleDotClick(index)}

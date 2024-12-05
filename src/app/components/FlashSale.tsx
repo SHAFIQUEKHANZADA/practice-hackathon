@@ -120,7 +120,7 @@ const FlashSale = () => {
             Today’s
           </h1>
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center text-center md:text-start md:justify-between">
           <div className="flex md:flex-row flex-col md:items-end md:gap-[87px]">
             <h1 className="text-[36px] font-semibold">Flash Sales</h1>
             <div className="flex items-end">
@@ -216,11 +216,11 @@ const FlashSale = () => {
                 </div>
 
                 <div className="absolute right-3 top-12 transform -translate-y-1/2 flex flex-col gap-2">
-                  <div className="bg-white  w-[34px] h-[34px] rounded-full flex items-center justify-center ">
-                    <AiOutlineHeart className="text-[24px]" />
+                  <div className="bg-white   sm:w-[34px] sm:h-[34px] w-[30px] h-[30px] rounded-full flex items-center justify-center ">
+                    <AiOutlineHeart className="text-[20px] sm:text-[24px]" />
                   </div>
-                  <div className="bg-white w-[34px] h-[34px] rounded-full flex items-center justify-center ">
-                    <IoEyeOutline className="text-[24px]" />
+                  <div className="bg-white  sm:w-[34px] sm:h-[34px] w-[30px] h-[30px] rounded-full flex items-center justify-center ">
+                    <IoEyeOutline className="text-[20px] sm:text-[24px]" />
                   </div>
                 </div>
 
@@ -253,7 +253,7 @@ const FlashSale = () => {
             <button className="text-[16px] font-medium text-white bg-[#DB4444] rounded px-[48px] py-[16px] hover:scale-100">View All Products</button>
       </div>
 
-      <div className="bg-[#000000] opacity-[30%] h-[1px] w-full mt-12 mb-20" />
+      <div className="bg-[#000000] opacity-[30%] sm:h-[1px] h-[8px] rounded-2xl sm:w-full w-[30%] mx-auto sm:mt-12 mt-6 mb-10 sm:mb-20" />
     </div>
 
   );

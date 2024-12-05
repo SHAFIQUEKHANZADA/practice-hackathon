@@ -50,7 +50,7 @@ const MobileMenuBar = () => {
         {!isMenuOpen && (
             <RiMenu2Line
                 onClick={() => setIsMenuOpen(true)}
-                className="h-6 w-6 text-black cursor-pointer"
+                className="h-7 w-7 text-black cursor-pointer"
             />
         )}
     
@@ -65,7 +65,7 @@ const MobileMenuBar = () => {
                     />
     
                     {/* Menu Links */}
-                    <ul className="flex flex-col mt-12 gap-6 w-full text-left px-6">
+                    <ul className="flex flex-col mt-12 gap-6 w-full text-left px-6 text-[40px]">
                         {["Home", "Contact", "About", "Sign Up"].map((link) => (
                             <Link href={`/${link.toLowerCase()}`} key={link}>
                                 <li className="relative text-gray-800 text-lg cursor-pointer group">

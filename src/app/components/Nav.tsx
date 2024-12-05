@@ -13,9 +13,9 @@ const poppins = Poppins({ subsets: ['latin'], weight: ["400"] })
 const Nav = () => {
     return (
         <div className='h-[70px] justify-end flex flex-col gap-3'>
-            <div className='text-[#000000] flex items-center h-[38px] justify-between w-[90%] mx-auto'>
+            <div className='text-[#000000] flex items-center md:h-[38px] h-full justify-between w-[90%] mx-auto'>
                 <MobileMenuBar/>
-                <h1 className={`${inter.className} text-[24px] md:pl-0 pl-14 font-bold`}>Exclusive</h1>
+                <h1 className={`${inter.className} text-[24px] md:pl-0 pl-[52px] font-bold`}>Exclusive</h1>
                 <ul className={`${poppins.className} text-[16px] font-normal hidden gap-[48px] md:flex`}>
                     <Link href='/'>
                         <li className="relative cursor-pointer group">
@@ -69,7 +69,7 @@ const Nav = () => {
                     </div>
                 </div>
             </div>
-            <div className="bg-[#000000] opacity-[30%] h-[1px] w-full" />
+            <div className="bg-[#000000] opacity-[30%] h-[1px] w-full md:block hidden" />
         </div>
     )
 }
