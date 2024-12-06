@@ -68,7 +68,7 @@ const MainBanner = () => {
   };
 
   return (
-    <div className="relative md:w-[892px] md:h-[344px] w-full h-[80vh] md:mt-10 overflow-hidden bg-black">  
+    <div className="relative md:w-[892px] md:h-[344px] w-full h-[90vh] md:mt-10 overflow-hidden bg-black">  
       <div
         className="flex transition-transform duration-500"
         style={{

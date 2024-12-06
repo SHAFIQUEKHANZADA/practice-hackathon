@@ -63,9 +63,10 @@ const Featured = () => {
                         className="group-hover:scale-110 md:h-[220px] md:w-[210] h-[170px] w-[150px] transition-transform duration-500 ease-in-out object-cover"
                     />
 
+               
                     <div className='text-white absolute md:bottom-7 md:left-7 left-3 bottom-5 h-[85px] md:w-[191px] flex flex-col justify-between'>
                         <h1 className='text-[24px] font-semibold'>Speakers</h1>
-                        <p className='text-[14px]'>Amazon wireless speakers</p>
+                        <p className='text-[12px]'>Amazon wireless speakers</p>
 
                         <button className='underline underline-offset-8 text-[16px font-medium] text-left'>Shop Now</button>
                     </div>
@@ -83,7 +84,7 @@ const Featured = () => {
 
                     <div className='text-white absolute md:bottom-7 md:left-7 left-3 bottom-5 h-[85px] md:w-[191px] flex flex-col justify-between'>
                         <h1 className='text-[24px] font-semibold'>Perfume</h1>
-                        <p className='text-[14px]'>GUCCI INTENSE OUD EDP</p>
+                        <p className='text-[12px]'>GUCCI INTENSE OUD EDP</p>
 
                         <button className='underline underline-offset-8 text-[16px font-medium] text-left'>Shop Now</button>
                     </div>

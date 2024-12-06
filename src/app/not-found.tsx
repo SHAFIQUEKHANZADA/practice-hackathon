@@ -5,8 +5,8 @@ const poppins = Poppins({ subsets: ['latin'], weight: ['400'] })
 
 export default function NotFound() {
   return (
-    <div className={`${poppins.className} relative`}>
-      <div className="absolute top-10 sm:left-16 left-6">
+    <div className={`${poppins.className} md:px-[68px] px-5 flex flex-col md:h-[80vh] h-[70vh] py-10`}>
+      <div className="">
         <Link href="/" className="text-gray-500 font-medium hover:underline">
           Home
         </Link>
