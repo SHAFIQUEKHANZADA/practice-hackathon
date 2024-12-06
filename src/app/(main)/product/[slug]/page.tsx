@@ -27,10 +27,17 @@ const ProductPage = async ({ params }: { params: { slug: string }; }) => {
             ));
     };
 
-    // Find related products based on category
-    const relatedProducts = products.filter(
-        (p) => p.category === product.category && p.slug !== product.slug
-    ).slice(5, 9); 
+ // Find related products from both products and bestSelling based on category
+ const relatedProductsFromProducts = products.filter(
+    (p) => p.category === product.category && p.slug !== product.slug
+).slice(0, 4); // First 4 related products from products
+
+const relatedProductsFromBestSelling = bestSelling.filter(
+    (p) => p.category === product.category && p.slug !== product.slug
+).slice(0, 3); // First 4 related products from bestSelling
+
+// Combine the related products from both arrays
+const relatedProducts = [...relatedProductsFromProducts, ...relatedProductsFromBestSelling];
 
 
     return (
@@ -166,7 +173,7 @@ const ProductPage = async ({ params }: { params: { slug: string }; }) => {
                             </div>
                         </div>
                                 
-                                <h3 className="font-medium text-[16px] pt-2">{relatedProduct.title}</h3>
+                                <h3 className="font-medium md:text-[16px] text-[10px] pt-2">{relatedProduct.title}</h3>
                                 <div className='flex gap-2'>
                                     <p className="mt-2 text-[16px] font-medium text-[#DB4444]">${relatedProduct.salePrice}</p>
                                     <p className="mt-2 text-[16px] font-medium line-through text-gray-500">${relatedProduct.originalPrice}</p>
