@@ -5,6 +5,7 @@ import { bestSelling } from "./ProductArray";
 import Image from "next/image";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoEyeOutline } from "react-icons/io5";
+import Link from "next/link";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 
@@ -36,6 +37,7 @@ const BestSelling = () => {
 
             <div className="my-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 sm:gap-8 gap-4">
                 {bestSelling.map((product) => (
+                              <Link href={`/product/${product.slug}`} className="w-full overflow-hidden" key={product.id}>
                     <div key={product.id} className="relative group bg-white rounded overflow-hidden md:h-[350px] h-[300px] md:w-[270px] flex flex-col justify-between">
                         <div className="relative w-full sm:h-[250px] h-[200px] overflow-hidden rounded">
                             <Image
@@ -73,6 +75,7 @@ const BestSelling = () => {
                             </div>
                         </div>
                     </div>
+                    </Link>
                 ))}
             </div>
         </div>

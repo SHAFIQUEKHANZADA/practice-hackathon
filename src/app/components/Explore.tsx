@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { IoEyeOutline } from 'react-icons/io5';
+import Link from 'next/link';  // Import Link from Next.js
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 
@@ -92,35 +93,38 @@ const Explore = () => {
             key={product.id}
             className="group relative bg-white w-full h-[322px] flex flex-col justify-between overflow-hidden"
           >
-            <div className="relative w-full sm:h-[250px] h-[220px] overflow-hidden rounded">
-              <Image
-                src={product.image}
-                alt={product.category}
-                width={270}
-                height={250}
-                className="w-full h-full object-cover rounded group-hover:scale-110 duration-500"
-              />
-              <div className="absolute text-[16px] font-medium bottom-0 left-0 w-full h-12 bg-[#000000] text-[#FAFAFA] text-center group-hover:translate-y-0 transition opacity-0 group-hover:opacity-100 flex items-center justify-center">
-                Add to Cart
-              </div>
-            </div>
-
-            <div className="bg-white flex flex-col justify-center gap-2">
-              <h2 className="text-[16px] font-medium text-black truncate">
-                {product.slug.replace(/-/g, " ")}
-              </h2>
-              <div className="flex sm:flex-row flex-col gap-2">
-                <p className="text-[#DB4444] pb-1 text-[16px] font-medium">
-                  ${product.originalPrice}
-                </p>
-              <div className="flex gap-2">
-              <div className="ml-[2px]">{renderStars(product.rating)}</div>
-                <div className="text-[14px] font-semibold text-gray-500">
-                  ({product.ratedBy})
+            
+            <Link href={`/product/${product.slug}`} className="w-full">
+              <div className="relative w-full sm:h-[250px] h-[220px] overflow-hidden rounded">
+                <Image
+                  src={product.image}
+                  alt={product.category}
+                  width={270}
+                  height={250}
+                  className="w-full h-full object-cover rounded group-hover:scale-110 duration-500"
+                />
+                <div className="absolute text-[16px] font-medium bottom-0 left-0 w-full h-12 bg-[#000000] text-[#FAFAFA] text-center group-hover:translate-y-0 transition opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                  Add to Cart
                 </div>
               </div>
+
+              <div className="bg-white flex flex-col justify-center gap-2">
+                <h2 className="text-[16px] font-medium text-black truncate">
+                  {product.slug.replace(/-/g, " ")}
+                </h2>
+                <div className="flex sm:flex-row flex-col gap-2">
+                  <p className="text-[#DB4444] pb-1 text-[16px] font-medium">
+                    ${product.originalPrice}
+                  </p>
+                  <div className="flex gap-2">
+                    <div className="ml-[2px]">{renderStars(product.rating)}</div>
+                    <div className="text-[14px] font-semibold text-gray-500">
+                      ({product.ratedBy})
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            </Link>
 
             {product.newArrival && (
               <div className="absolute top-[10px] left-2 bg-[#00FF66] text-white text-xs px-[12px] py-[4px] rounded">
@@ -129,10 +133,10 @@ const Explore = () => {
             )}
 
             <div className="absolute right-3 top-12 transform -translate-y-1/2 flex flex-col gap-2">
-              <div className="bg-white  sm:w-[34px] sm:h-[34px] w-[30px] h-[30px]  rounded-full flex items-center justify-center">
+              <div className="bg-white sm:w-[34px] sm:h-[34px] w-[30px] h-[30px] rounded-full flex items-center justify-center">
                 <AiOutlineHeart className="text-[20px] sm:text-[24px]" />
               </div>
-              <div className="bg-white  sm:w-[34px] sm:h-[34px] w-[30px] h-[30px]  rounded-full flex items-center justify-center">
+              <div className="bg-white sm:w-[34px] sm:h-[34px] w-[30px] h-[30px] rounded-full flex items-center justify-center">
                 <IoEyeOutline className="text-[20px] sm:text-[24px]" />
               </div>
             </div>

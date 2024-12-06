@@ -36,7 +36,7 @@ const Hero = () => {
     ];
 
     return (
-        <div className={`${poppins.className} md:w-[90%] mx-auto md:h-[calc(100vh-120px)] h-[70vh]  flex items-start justify-between`}>
+        <div className={`${poppins.className} md:w-[90%] mx-auto md:h-[calc(100vh-120px)] h-[90vh]  flex items-start justify-between`}>
             <div className='md:flex hidden flex-col gap-4 w-[217px] md:mt-10'>
                 {categories.map((category) => (
                     <div key={category.name} className="relative">

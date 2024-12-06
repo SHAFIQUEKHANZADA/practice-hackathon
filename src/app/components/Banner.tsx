@@ -39,7 +39,7 @@ const Banner = () => {
     }, []);
     return (
         <div className={`${poppins.className}`}>
-            <div className='md:h-[500px] h-full flex md:flex-row  gap-7 md:gap-0 flex-col justify-evenly md:px-0 px-4 md:py-0 py-10  bg-black w-[90%] mx-auto my-16'>
+            <div className='md:h-[500px] h-full flex md:flex-row  gap-7 md:gap-0 flex-col justify-evenly md:px-0 px-5 md:py-0 py-10  bg-black md:w-[90%] mx-auto my-16'>
                 <div className='flex flex-col md:py-16 gap-5 md:gap-0 justify-between'>
                     <div className='flex flex-col gap-4'>
                         <p className='text-[16px] font-semibold text-[#00FF66]'>Categories</p>

@@ -7,6 +7,7 @@ import { BsStarFill } from "react-icons/bs";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Image from "next/image";
 import { IoEyeOutline } from "react-icons/io5";
+import Link from "next/link";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 
@@ -175,6 +176,7 @@ const FlashSale = () => {
         {/* Carousel */}
         <div className="flex">
           {itemsToDisplay.map((product) => (
+             <Link href={`/product/${product.slug}`} className="w-full overflow-hidden" key={product.id}>
             <div
               key={product.id}
               className="w-[270px] group relative"
@@ -182,14 +184,14 @@ const FlashSale = () => {
                 width: `${100 / visibleItems}%`,
               }}
             >
-              <div className="relative bg-white md:w-[270px] w-[80vw] mx-auto h-[350px] flex flex-col justify-between overflow-hidden">
-              <div className="relative w-full h-[250px] overflow-hidden rounded">
+              <div className="relative bg-white md:w-[270px] w-[80vw] mx-auto sm:h-[350px] h-[400px] flex flex-col justify-between overflow-hidden">
+              <div className="relative w-full sm:h-[250px] h-[300px] overflow-hidden rounded">
                 <Image
                   src={product.image}
                   alt={product.category}
                   width={270}
                   height={250}
-                  className="w-full h-full object-cover rounded group-hover:scale-110 duration-500"
+                  className="w-full sm:h-full h-[300px] object-cover rounded group-hover:scale-110 duration-500"
                 />
                   <div className="absolute text-[16px] font-medium bottom-0 left-0 w-full h-12 bg-[#000000] text-[#FAFAFA] text-center   group-hover:translate-y-0 transition opacity-0 group-hover:opacity-100 flex items-center justify-center">
                     Add to Cart
@@ -245,6 +247,7 @@ const FlashSale = () => {
 
               </div>
             </div>
+            </Link>
           ))}
         </div>
       </div>

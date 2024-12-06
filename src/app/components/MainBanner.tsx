@@ -68,7 +68,7 @@ const MainBanner = () => {
   };
 
   return (
-    <div className="relative md:w-[892px] md:h-[344px] w-full h-[60vh] mt-10 overflow-hidden bg-black">  
+    <div className="relative md:w-[892px] md:h-[344px] w-full h-[80vh] md:mt-10 overflow-hidden bg-black">  
       <div
         className="flex transition-transform duration-500"
         style={{
@@ -78,7 +78,7 @@ const MainBanner = () => {
         {banners.map((banner) => (
           <div
             key={banner.id}
-            className={`w-full sm:h-[344px] md:h-[440px] h-[60vh] flex-shrink-0 flex flex-col text-white ${banner.useAsBackground ? banner.bgColor : ""} bg-no-repeat`}
+            className={`w-full sm:h-[344px] md:h-[440px] h-[80vh] flex-shrink-0 flex flex-col text-white ${banner.useAsBackground ? banner.bgColor : ""} bg-no-repeat`}
           >
             <div className="flex md:flex-row flex-col justify-between">
               <div className="flex flex-col py-14  md:pl-16 pl-4 md:justify-between">
@@ -88,7 +88,7 @@ const MainBanner = () => {
                     <h1 className="text-[16px]">{banner.title}</h1>
                   </div>
              
-                <h1 className="text-[48px] font-semibold">
+                <h1 className="md:text-[48px] text-[60px] font-semibold">
                   {banner.description}
                 </h1>
                 <span className="text-[16px] font-medium flex items-center underline hover:cursor-pointer gap-2 underline-offset-8">
@@ -102,7 +102,7 @@ const MainBanner = () => {
                     alt={banner.title}
                     width={500}
                     height={300}
-                    className="h-full w-[500px] object-contain pt-5"
+                    className="h-full w-[500px] object-contain md:pt-5"
                   />
                 </div>
               )}
