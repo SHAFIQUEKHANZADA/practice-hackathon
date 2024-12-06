@@ -44,7 +44,7 @@ const banners = [
     title: "Exclusive Pairs",
     description: "Match Your Style", 
     buttonText: "Shop Now",
-    bgColor: "bg-[url('/images/shoesban.jpg')] bg-cover bg-center",  
+    bgColor: "bg-[url('/images/shoesban.jpg')] bg-cover md:bg-center bg-left",  
     useAsBackground: true,
   },
 
