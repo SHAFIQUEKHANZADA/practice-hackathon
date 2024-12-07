@@ -1,13 +1,46 @@
+"use client"
 import { bestSelling, products } from '@/app/components/ProductArray';
 import QuantitySelector from '@/app/components/Qty';
+import { addToCart } from '@/app/store/cartSlice';
 import { Poppins } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { BsStarFill } from 'react-icons/bs';
 import { IoIosHeartEmpty } from 'react-icons/io';
+import { useDispatch } from 'react-redux';
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 
-const ProductPage = async ({ params }: { params: { slug: string }; }) => {
+const ProductPage = ({ params }: { params: { slug: string }; }) => {
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const productss = products.find((p) => p.slug === params.slug) || bestSelling.find((p) => p.slug === params.slug);
+
+    if (!productss) {
+      return <div>Product not found.</div>;
+    }
+  
+ 
+const handleAddToCartAndRedirect = () => {
+    if (product) {
+      dispatch(
+        addToCart({
+          id: product.id.toString(),
+          name: product.title,
+          price: product.originalPrice,
+          image: product.image,
+          quantity: 1,
+        })
+      );
+  
+      // Navigate to cart page
+      router.push('/cart');
+    } else {
+      // Handle the case where the product is undefined
+      console.error('Product not found or undefined.');
+      alert('Product not found.');
+    }
+  };
     const product =
         products.find((p) => p.slug === params.slug) ||
         bestSelling.find((p) => p.slug === params.slug);
@@ -27,7 +60,6 @@ const ProductPage = async ({ params }: { params: { slug: string }; }) => {
             ));
     };
 
- // Find related products from both products and bestSelling based on category
  const relatedProductsFromProducts = products.filter(
     (p) => p.category === product.category && p.slug !== product.slug
 ).slice(0, 4); // First 4 related products from products
@@ -121,7 +153,7 @@ const relatedProducts = [...relatedProductsFromProducts, ...relatedProductsFromB
                         <QuantitySelector />
                         <div className='flex justify-between gap-0 sm:gap-3'>
                             <div>
-                                <button className='text-[16px] font-medium py-[10px] px-[48px] bg-[#DB4444] rounded text-white'>Buy Now</button>
+                                <button  onClick={handleAddToCartAndRedirect} className='text-[16px] font-medium py-[10px] px-[48px] bg-[#DB4444] rounded text-white'>Buy Now</button>
                             </div>
                             <div className='h-[45px] w-[45px] border border-gray-400 text-[32px] hover:bg-[#DB4444] hover:text-white flex justify-center items-center rounded'>
                                 <IoIosHeartEmpty />
