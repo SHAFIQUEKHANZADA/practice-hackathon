@@ -1,97 +1,197 @@
-import { Poppins } from 'next/font/google';
-import Image from 'next/image';
-import React from 'react'
+"use client";
+
+import { Poppins } from "next/font/google";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { BsStarFill } from "react-icons/bs";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { AiOutlineHeart } from "react-icons/ai";
+import { IoEyeOutline } from "react-icons/io5";
+import Link from "next/link";
+import { ProductType } from "./types";
+import { urlFor } from "@/sanity/lib/image";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
+
 const Featured = () => {
-    return (
-        <div className={`${poppins.className} relative flex flex-col justify-between my-12`}>
-            <div className="flex items-center gap-4 mb-5 md:px-[65px] px-5">
-                <div className="bg-[#DB4444] w-[20px] h-[40px] rounded-md" />
-                <h1 className="text-[16px] font-semibold text-[#DB4444] hover:underline">
-                    Featured
-                </h1>
-            </div>
-            <div className="flex justify-between items-center md:px-[65px] px-5">
-                <h1 className="md:text-[36px] text-[28px] font-semibold">New Arrival</h1>
-            </div>
-            <div className='grid md:grid-cols-4 md:h-[600px]  md:gap-4  md:px-[65px] mt-12'>
-                <div className="bg-black col-span-2 row-span-2 md:rounded flex h-[500px] md:h-full items-end justify-center relative group overflow-hidden">
-                    <Image
-                        src="/images/f1.png"
-                        alt="Main Image"
-                        width={511}
-                        height={511}
-                        quality={100}
-                        priority
-                        className="group-hover:scale-110  transition-transform duration-500 ease-in-out object-cover"
-                    />
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [visibleItems, setVisibleItems] = useState(8);
+  const [products, setProducts] = useState<ProductType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  console.log(error)
 
-                    <div className='text-white absolute md:bottom-7 md:left-7 left-3 bottom-5 h-[122px] w-[242px] flex flex-col justify-between'>
-                        <h1 className='text-[24px] font-semibold'>PlayStation 5</h1>
-                        <p className='text-[14px]'>Black and White version of the PS5 coming out on sale.</p>
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setIsLoading(true);
+      setError(null);
 
-                        <button className='underline underline-offset-8 text-[16px font-medium] text-left'>Shop Now</button>
-                    </div>
-                </div>
-                <div className='bg-[#0C0C0C] col-span-2 md:rounded relative h-[284px] flex justify-end'>
-                    <Image
-                        src="/images/f2.png"
-                        alt="Main Image"
-                        width={432}
-                        height={200}
-                        quality={100}
-                        priority
-                        className="object-cover md:rounded"
-                    />
+      try {
+        const response = await fetch("/api/featured");
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
 
-                    <div className='text-white absolute md:bottom-7 md:left-7 left-3 bottom-5 h-[122px] w-[255px] flex flex-col justify-between'>
-                        <h1 className='text-[24px] font-semibold'>Women’s Collections</h1>
-                        <p className='text-[14px]'>Featured woman collections that give you another vibe.</p>
+        const data = await response.json();
 
-                        <button className='underline underline-offset-8 text-[16px font-medium] text-left'>Shop Now</button>
-                    </div>
-                </div>
-                <div className='bg-[#1F1F1F] md:rounded relative h-[300px] flex justify-center items-center group'>
-                    <Image
-                        src="/images/f3.png"
-                        alt="Main Image"
-                        width={210}
-                        height={220}
-                        quality={100}
-                        priority
-                        className="group-hover:scale-110 md:h-[220px] md:w-[210] h-[170px] w-[150px] transition-transform duration-500 ease-in-out object-cover"
-                    />
+        if (!data.success) {
+          throw new Error(data.message || "Failed to load products");
+        }
 
-               
-                    <div className='text-white absolute md:bottom-7 md:left-7 left-3 bottom-5 h-[85px] md:w-[191px] flex flex-col justify-between'>
-                        <h1 className='text-[24px] font-semibold'>Speakers</h1>
-                        <p className='text-[12px]'>Amazon wireless speakers</p>
+        setProducts(data.data);
+      } catch (err) {
+        console.log(err)
+        setError("Something went wrong.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-                        <button className='underline underline-offset-8 text-[16px font-medium] text-left'>Shop Now</button>
-                    </div>
-                </div>
-                <div className='bg-[#2B2B2B] md:rounded relative h-[300px] flex justify-center items-center group'>
-                    <Image
-                        src="/images/f4.png"
-                        alt="Main Image"
-                        width={201}
-                        height={203}
-                        quality={100}
-                        priority
-                        className="group-hover:scale-110 md:h-[203px] md:w-[201px] h-[153px] w-[151px] transition-transform duration-500 ease-in-out object-cover"
-                    />
+    fetchProducts();
+  }, []);
 
-                    <div className='text-white absolute md:bottom-7 md:left-7 left-3 bottom-5 h-[85px] md:w-[191px] flex flex-col justify-between'>
-                        <h1 className='text-[24px] font-semibold'>Perfume</h1>
-                        <p className='text-[12px]'>GUCCI INTENSE OUD EDP</p>
+  useEffect(() => {
+    const updateVisibleItems = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1024) {
+        setVisibleItems(8);
+      } else if (screenWidth >= 768) {
+        setVisibleItems(4);
+      } else {
+        setVisibleItems(2);
+      }
+    };
 
-                        <button className='underline underline-offset-8 text-[16px font-medium] text-left'>Shop Now</button>
-                    </div>
-                </div>
-            </div>
+    updateVisibleItems();
+    window.addEventListener("resize", updateVisibleItems);
+
+    return () => {
+      window.removeEventListener("resize", updateVisibleItems);
+    };
+  }, []);
+
+  const nextSlide = () => {
+    const newIndex = currentIndex + visibleItems;
+    setCurrentIndex(newIndex >= products.length ? 0 : newIndex);
+  };
+
+  const prevSlide = () => {
+    const newIndex = currentIndex - visibleItems;
+    setCurrentIndex(newIndex < 0 ? Math.max(0, products.length - visibleItems) : newIndex);
+  };
+
+  const renderStars = (rating: number) => {
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      if (i < Math.floor(rating)) {
+        stars.push(<BsStarFill key={i} className="text-yellow-500" />);
+      } else {
+        stars.push(<BsStarFill key={i} className="text-gray-300" />);
+      }
+    }
+    return <div className="flex gap-1">{stars}</div>;
+  };
+
+  const itemsToDisplay = products.slice(currentIndex, currentIndex + visibleItems);
+
+  return (
+    <div className={`${poppins.className} md:px-[65px] px-5`}>
+      <div className="flex items-center gap-4 mb-5">
+        <div className="bg-[#DB4444] w-[20px] h-[40px] rounded-md" />
+        <h1 className="text-[16px] font-semibold text-[#DB4444] hover:underline">
+          Featured
+        </h1>
+      </div>
+
+      <div className="flex justify-between items-center">
+        <h1 className="md:text-[36px] text-[22px] font-semibold">
+          Explore Our Featured Products
+        </h1>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={prevSlide}
+            className="bg-[#F5F5F5] sm:w-[46px] sm:h-[46px] w-[40px] h-[40px] rounded-full flex items-center justify-center"
+          >
+            <FaArrowLeft />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="bg-[#F5F5F5] sm:w-[46px] sm:h-[46px] w-[40px] h-[40px] rounded-full flex items-center justify-center"
+          >
+            <FaArrowRight />
+          </button>
         </div>
-    )
-}
+      </div>
 
-export default Featured
+      {/* Products Section */}
+      <div className="grid md:grid-cols-4 grid-cols-2 gap-6 my-8">
+        {isLoading
+          ? Array.from({ length: visibleItems }).map((_, index) => (
+              <div
+                key={index}
+                className="bg-gray-200 animate-pulse w-full h-[322px] flex items-center justify-center rounded-lg"
+              >
+                Loading...
+              </div>
+            ))
+          : itemsToDisplay.map((product, id) => (
+              <div
+                key={id}
+                className="group relative bg-white w-full h-[322px] flex flex-col justify-between overflow-hidden"
+              >
+                <Link href={`/${product.tags}/${product.name}`} className="w-full">
+                  <div className="relative w-full sm:h-[250px] h-[220px] flex items-center justify-center overflow-hidden rounded">
+                    <Image
+                      src={urlFor(product.imageUrl).url()}
+                      alt={product.name}
+                      width={270}
+                      height={250}
+                      className="w-[200px] h-[200px] rounded group-hover:scale-110 duration-500"
+                    />
+                    <div className="absolute text-[16px] font-medium bottom-0 left-0 w-full h-12 bg-[#000000] text-[#FAFAFA] text-center group-hover:translate-y-0 transition opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                      Add to Cart
+                    </div>
+                  </div>
+
+                  <div className="bg-white flex flex-col justify-center gap-2">
+                    <h2 className="text-[16px] font-medium text-black truncate">
+                      {product.name.replace(/-/g, " ")}
+                    </h2>
+                    <div className="flex sm:flex-row flex-col gap-2">
+                      <p className="text-[#DB4444] pb-1 text-[16px] font-medium">
+                        ${product.price}
+                      </p>
+                      <div className="flex gap-2">
+                        <div className="ml-[2px]">{renderStars(product.rating)}</div>
+                        <div className="text-[14px] font-semibold text-gray-500">
+                          ({product.ratingCount})
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+
+                <div className="absolute right-3 top-12 transform -translate-y-1/2 flex flex-col gap-2">
+                  <div className="bg-white sm:w-[34px] sm:h-[34px] w-[30px] h-[30px] rounded-full flex items-center justify-center">
+                    <AiOutlineHeart className="text-[20px] sm:text-[24px]" />
+                  </div>
+                  <div className="bg-white sm:w-[34px] sm:h-[34px] w-[30px] h-[30px] rounded-full flex items-center justify-center">
+                    <IoEyeOutline className="text-[20px] sm:text-[24px]" />
+                  </div>
+                </div>
+              </div>
+            ))}
+      </div>
+
+      <div className="flex justify-center sm:py-10 py-5">
+        <Link href={"/featured"}>
+          <button className="text-[16px] font-medium text-white bg-[#DB4444] rounded px-[48px] py-[16px]">
+            View All Products
+          </button>
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default Featured;

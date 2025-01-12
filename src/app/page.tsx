@@ -1,9 +1,9 @@
 import Banner from "./components/Banner";
-import BestSelling from "./components/BestSelling";
+import Jewelery from "./components/Jewelery";
 import Category from "./components/Category";
 import CustomerSupport from "./components/CustomerSupport";
-import Explore from "./components/Explore";
 import Featured from "./components/Featured";
+import OurProducts from "./components/ourProducts";
 import FlashSale from "./components/FlashSale";
 import Hero from "./components/Hero";
 
@@ -13,10 +13,10 @@ export default function Home() {
      <Hero/>
      <FlashSale/>
      <Category/>
-     <BestSelling/>
+     <Jewelery/>
      <Banner/>
-     <Explore/>
      <Featured/>
+     <OurProducts/>
      <CustomerSupport/>
     </div>
   );

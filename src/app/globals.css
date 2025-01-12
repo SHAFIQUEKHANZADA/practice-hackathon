@@ -25,3 +25,14 @@ body {
     text-wrap: balance;
   }
 }
+
+
+
+.swiper-slide {
+  flex-shrink: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  position: static !important;
+  transition: none !important;
+  display: block !important;
+}

@@ -1,58 +1,89 @@
 "use client";
 import { Poppins } from "next/font/google";
 import { useEffect, useState } from "react";
-import { products } from "./ProductArray";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BsStarFill } from "react-icons/bs";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Image from "next/image";
 import { IoEyeOutline } from "react-icons/io5";
 import Link from "next/link";
+import { ProductType } from "./types";
+import { urlFor } from "@/sanity/lib/image";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import "swiper/css";
+import "swiper/css/navigation";
+import { Swiper as SwiperType } from "swiper";
+import { Navigation } from "swiper/modules";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400"] });
 
 const FlashSale = () => {
+  const [products, setProducts] = useState<ProductType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [screenSize, setScreenSize] = useState<number>(0);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [visibleItems, setVisibleItems] = useState(5);
+  console.log(activeIndex)
 
   useEffect(() => {
-    const updateVisibleItems = () => {
-      const screenWidth = window.innerWidth;
-      if (screenWidth >= 1024) {
-        setVisibleItems(4);
-      } else if (screenWidth >= 768) {
-        setVisibleItems(3);
-      } else {
-        setVisibleItems(1);
+    if (swiperInstance) {
+      swiperInstance.on('slideChange', () => {
+        setActiveIndex(swiperInstance.realIndex);
+      });
+    }
+  }, [swiperInstance]);
+
+  const handleNextClick = () => {
+    if (swiperInstance) {
+      swiperInstance.slideNext();
+    }
+  };
+
+  const handlePrevClick = () => {
+    if (swiperInstance) {
+      swiperInstance.slidePrev();
+    }
+  };
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await fetch("/api/all");
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error(data.message || "Failed to load products");
+        }
+        const saleProducts = data.data.filter((product: ProductType) => product.discountPercentage > 0);
+        setProducts(saleProducts);
+      } catch (err) {
+        console.log(err)
+        setError("Something went wrong.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    updateVisibleItems();
-    window.addEventListener("resize", updateVisibleItems);
-
-    return () => {
-      window.removeEventListener("resize", updateVisibleItems);
-    };
+    fetchProducts();
   }, []);
 
-  const itemsToDisplay = products.slice(
-    currentIndex,
-    currentIndex + visibleItems
-  );
+  useEffect(() => {
+    const handleResize = () => setScreenSize(window.innerWidth);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      (prevIndex + visibleItems) % products.length
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      (prevIndex - visibleItems + products.length) % products.length
-    );
-  };
-
+ 
   const renderStars = (rating: number) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -97,21 +128,6 @@ const FlashSale = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const renderDiscount = (salePrice: number, originalPrice: number) => {
-    if (salePrice < originalPrice) {
-      const discountPercentage = Math.round(
-        ((originalPrice - salePrice) / originalPrice) * 100
-      );
-      return (
-        <div className="bg-[#DB4444] text-[#FAFAFA] py-[5px] px-[15px] rounded text-[12px]">
-          -{discountPercentage}%
-        </div>
-      );
-    }
-    return null;
-  };
-
-
   return (
     <div className={`${poppins.className} md:px-[65px] px-5`}>
       <div className="flex flex-col gap-4">
@@ -154,106 +170,122 @@ const FlashSale = () => {
               </div>
             </div>
           </div>
-          <div className="md:flex hidden items-center gap-3">
+
+          <div className="md:flex hidden items-center gap-2">
+            {/* Previous Button */}
             <button
-              onClick={prevSlide}
-              className="  bg-[#F5F5F5] w-[46px] h-[46px] rounded-full flex items-center justify-center"
+              onClick={handlePrevClick}
+              className="bg-[#F5F5F5] w-[46px] h-[46px] rounded-full flex items-center justify-center"
             >
               <FaArrowLeft />
             </button>
+
+            {/* Next Button */}
             <button
-              onClick={nextSlide}
-              className=" bg-[#F5F5F5] w-[46px] h-[46px] rounded-full flex items-center justify-center"
+              onClick={handleNextClick}
+              className="bg-[#F5F5F5] w-[46px] h-[46px] rounded-full flex items-center justify-center"
             >
               <FaArrowRight />
             </button>
-
           </div>
+
+
         </div>
       </div>
       {/* Products Section */}
       <div className="relative my-8 hover:cursor-pointer px-0">
-        {/* Carousel */}
+        {/* Swiper Carousel */}
         <div className="flex">
-          {itemsToDisplay.map((product) => (
-             <Link href={`/product/${product.slug}`} className="w-full overflow-hidden" key={product.id}>
-            <div
-              key={product.id}
-              className="w-[270px] group relative"
-              style={{
-                width: `${100 / visibleItems}%`,
-              }}
-            >
-              <div className="relative bg-white md:w-[270px] w-[80vw] mx-auto sm:h-[350px] h-[400px] flex flex-col justify-between overflow-hidden">
-              <div className="relative w-full sm:h-[250px] h-[300px] overflow-hidden rounded">
-                <Image
-                  src={product.image}
-                  alt={product.category}
-                  width={270}
-                  height={250}
-                  className="w-full sm:h-full h-[300px] object-cover rounded group-hover:scale-110 duration-500"
+          {isLoading ? (
+            <div className="my-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 sm:gap-8 gap-4">
+              {Array.from({ length: screenSize >= 1024 ? 4 : screenSize >= 768 ? 3 : 2, }).map((_, index) => (
+                <div
+                  key={index}
+                  className="bg-gray-200 animate-pulse rounded md:h-[350px] h-[300px] md:w-[270px] w-full"
                 />
-                  <div className="absolute text-[16px] font-medium bottom-0 left-0 w-full h-12 bg-[#000000] text-[#FAFAFA] text-center   group-hover:translate-y-0 transition opacity-0 group-hover:opacity-100 flex items-center justify-center">
-                    Add to Cart
-                  </div>
-                </div>
-
-                {/* Product Details */}
-                <div className=" bg-white flex flex-col justify-center gap-2">
-                  <h2 className="text-lg font-semibold text-black truncate">
-                    {product.slug.replace(/-/g, " ")}
-                  </h2>
-                  <div className="flex items-center gap-3">
-                    <p className="text-[#DB4444] text-[16px] font-medium">
-                      ${product.salePrice}
-                    </p>
-                    <p className="  text-gray-500 text-[16px] font-medium line-through">
-                      ${product.originalPrice}
-                    </p>
-                  </div>
-                  <div className="flex items-end gap-2">
-                    <div className="mb-[3px]">{renderStars(product.rating)}</div>
-                    <div className="text-[14px] font-semibold text-gray-500">({product.ratedBy})</div>
-                  </div>
-                </div>
-
-                <div className="absolute right-3 top-12 transform -translate-y-1/2 flex flex-col gap-2">
-                  <div className="bg-white   sm:w-[34px] sm:h-[34px] w-[30px] h-[30px] rounded-full flex items-center justify-center ">
-                    <AiOutlineHeart className="text-[20px] sm:text-[24px]" />
-                  </div>
-                  <div className="bg-white  sm:w-[34px] sm:h-[34px] w-[30px] h-[30px] rounded-full flex items-center justify-center ">
-                    <IoEyeOutline className="text-[20px] sm:text-[24px]" />
-                  </div>
-                </div>
-
-                <div className="absolute left-3 top-3">
-                  {renderDiscount(product.salePrice, product.originalPrice)}
-                </div>
-
-                <div className="md:hidden block">
-                  <button
-                    onClick={prevSlide}
-                    className="absolute left-1 top-32 transform -translate-y-1/2 bg-[#F5F5F5]  w-10 h-10 rounded-full flex items-center justify-center "
-                  >
-                    &#60;
-                  </button>
-                  <button
-                    onClick={nextSlide}
-                    className="absolute right-1 top-32 transform -translate-y-1/2 bg-[#F5F5F5]  w-10 h-10 rounded-full flex items-center justify-center "
-                  >
-                    &#62;
-                  </button>
-                </div>
-
-              </div>
+              ))}
             </div>
-            </Link>
-          ))}
+          ) : error ? (
+            <div className="text-red-500 text-center my-8">{error}</div>
+          ) : (
+            <Swiper
+              modules={[Navigation]}
+              spaceBetween={10}
+              slidesPerView="auto"
+              onSwiper={(swiper) => setSwiperInstance(swiper)}
+              loop={true}
+              className="carousel__wrapper"
+            >
+              {products.map((product, id) => (
+                <SwiperSlide key={id}>
+                  <Link href={`/${product.tags}/${product.name}`} className="w-full overflow-hidden">
+                    <div className="w-full group relative">
+
+                      <div className="relative mx-3 bg-white sm:w-[270px] w-[80vw] sm:h-[350px] h-[400px] flex flex-col justify-between overflow-hidden">
+                        <div className="relative w-full sm:h-[250px] h-[300px] flex items-center justify-center overflow-hidden rounded">
+                          <div className="absolute inset-0 flex justify-center items-center bg-white rounded">
+                            {isLoading ? (
+                              <div className="spinner-border animate-spin border-t-4 border-blue-500 border-solid rounded-full w-16 h-16"></div>
+                            ) : (
+                              <Image
+                                src={urlFor(product.imageUrl).url()}
+                                alt={product.name}
+                                width={270}
+                                height={250}
+                                className="w-[200px] h-[200px] rounded group-hover:scale-110 duration-500"
+                              />
+                            )}
+                          </div>
+
+                          {/* Discount Percentage */}
+                          <div className="absolute top-3 left-3 bg-red-500 text-white text-sm font-bold py-1 px-2 rounded">
+                            {Math.round(((product.priceWithoutDiscount - product.price) / product.priceWithoutDiscount) * 100)}%
+                          </div>
+
+                          <div className="absolute text-[16px] font-medium bottom-0 left-0 w-full h-12 bg-[#000000] text-[#FAFAFA] text-center group-hover:translate-y-0 transition opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                            Add to Cart
+                          </div>
+                        </div>
+
+                        {/* Product Details */}
+                        <div className=" bg-white flex flex-col justify-center gap-2">
+                          <h2 className="text-lg font-semibold text-black truncate">
+                            {product.name.replace(/-/g, " ")}
+                          </h2>
+                          <div className="flex items-center gap-3">
+                            <p className="text-[#DB4444] text-[16px] font-medium">
+                              ${product.priceWithoutDiscount}
+                            </p>
+                            <p className="text-gray-500 text-[16px] font-medium line-through">
+                              ${product.price}
+                            </p>
+                          </div>
+                          <div className="flex items-end gap-2">
+                            <div className="mb-[3px]">{renderStars(product.rating)}</div>
+                            <div className="text-[14px] font-semibold text-gray-500">({product.ratingCount})</div>
+                          </div>
+                        </div>
+
+                        {/* Add to Favorites and View */}
+                        <div className="absolute right-3 top-12 transform -translate-y-1/2 flex flex-col gap-2">
+                          <div className="bg-white sm:w-[34px] sm:h-[34px] w-[30px] h-[30px] rounded-full flex items-center justify-center">
+                            <AiOutlineHeart className="text-[20px] sm:text-[24px]" />
+                          </div>
+                          <div className="bg-white sm:w-[34px] sm:h-[34px] w-[30px] h-[30px] rounded-full flex items-center justify-center">
+                            <IoEyeOutline className="text-[20px] sm:text-[24px]" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
         </div>
       </div>
-
       <div className="flex justify-center py-10">
-            <button className="text-[16px] font-medium text-white bg-[#DB4444] rounded px-[48px] py-[16px] hover:scale-100">View All Products</button>
+        <Link href={"/all"}><button className="text-[16px] font-medium text-white bg-[#DB4444] rounded px-[48px] py-[16px] hover:scale-100">View All Products</button></Link>
       </div>
 
       <div className="bg-[#000000] opacity-[30%] sm:h-[1px] h-[8px] rounded-2xl sm:w-full w-[30%] mx-auto sm:mt-12 mt-6 mb-10 sm:mb-20" />
