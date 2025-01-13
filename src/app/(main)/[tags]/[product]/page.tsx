@@ -115,7 +115,7 @@ const ProductPage = ({ params }: { params: { tags: string, product: string } }) 
                     </li>
                     <li className="text-[14px] text-black opacity-[50%]">/</li>
                     <li>
-                        <Link href="/products" className="text-[14px] text-black opacity-[50%]">
+                        <Link href={`/${params.tags}`} className="text-[14px] text-black opacity-[50%]">
                             {params.tags}
                         </Link>
                     </li>
