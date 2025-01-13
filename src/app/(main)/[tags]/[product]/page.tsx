@@ -126,16 +126,17 @@ const ProductPage = ({ params }: { params: { tags: string, product: string } }) 
 
             {/* Product Details */}
             <div className="flex flex-col md:flex-row md:gap-0 gap-10 justify-evenly md:mt-16 mt-5">
-                <div className="sm:w-[500px] sm:h-[600px]">
+                <div className="sm:w-[400px] sm:h-[500px] flex justify-center">
                     <Image
                         src={urlFor(product.imageUrl).url() || '/images/imgone.png'}  
                         alt={product.name || 'Product Image'}
                         width={500}
                         height={600}
-                        className="rounded p-4"
+                        className="rounded p-4 w-[300px] h-[400px]"
                     />
                 </div>
-                <div className="flex flex-col justify-between sm:w-[399px] md:h-[650px] gap-[10px] md:gap-0">
+
+                <div className="flex flex-col  space-y-5 sm:w-[399px] gap-[10px] md:gap-0">
                     <h1 className="text-2xl font-semibold">{product.name}</h1>
                     <p className="text-gray-600">{product.tags}</p>
                     <div className="flex items-center gap-2">
