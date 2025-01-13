@@ -86,7 +86,7 @@ const Jewelery = () => {
             ) : (
                 <div className="my-8 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 sm:gap-8 gap-4">
                     {products.map((product, id) => (
-                        <Link href={`/product/${product.name}`} className="w-full overflow-hidden" key={id}>
+                        <Link href={`/${product.tags}/${product.name}`} className="w-full overflow-hidden" key={id}>
                             <div className="relative group bg-white rounded overflow-hidden md:h-[350px] h-[300px] md:w-[270px] flex flex-col justify-between">
                                 <div className="relative w-full sm:h-[250px] h-[200px] flex items-center justify-center overflow-hidden rounded">
                                     <Image
